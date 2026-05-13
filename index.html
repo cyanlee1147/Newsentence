@@ -3,32 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>莫蘭迪金句海報生成器</title>
+<title>莫蘭迪八色海報生成器</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --morandi-mint-bg: #E0E8E1;
-    --morandi-mint-accent: #AEC1B1;
-    --morandi-mint-text: #607366;
-    --morandi-mint-sub: #889D90;
-
-    --morandi-blue-bg: #E1E8EE;
-    --morandi-blue-accent: #ADC1CE;
-    --morandi-blue-text: #607686;
-    --morandi-blue-sub: #8BA1AE;
-
-    --morandi-rose-bg: #EBE0E1;
-    --morandi-rose-accent: #CEADB0;
-    --morandi-rose-text: #866063;
-    --morandi-rose-sub: #AE8B8E;
-
-    --morandi-taupe-bg: #EAE3DD;
-    --morandi-taupe-accent: #CDBCAD;
-    --morandi-taupe-text: #867160;
-    --morandi-taupe-sub: #AE9C8B;
+    /* 莫蘭迪 8 色定義 */
+    --m-red-bg: #E8D7D7; --m-red-acc: #C1A6A6; --m-red-tx: #735D5D; --m-red-sub: #9D8A8A;
+    --m-orange-bg: #E8DED7; --m-orange-acc: #C1B2A6; --m-orange-tx: #73675D; --m-orange-sub: #9D918A;
+    --m-yellow-bg: #E8E5D7; --m-yellow-acc: #C1BDA6; --m-yellow-tx: #736F5D; --m-yellow-sub: #9D998A;
+    --m-green-bg: #DDE8D7; --m-green-acc: #B2C1A6; --m-green-tx: #67735D; --m-green-sub: #919D8A;
+    --m-blue-bg: #D7E1E8; --m-blue-acc: #A6B7C1; --m-blue-tx: #5D6C73; --m-blue-sub: #8A989D;
+    --m-purple-bg: #DFD7E8; --m-purple-acc: #B3A6C1; --m-purple-tx: #685D73; --m-purple-sub: #928A9D;
+    --m-pink-bg: #E8D7E2; --m-pink-acc: #C1A6B8; --m-pink-tx: #735D6C; --m-pink-sub: #9D8A95;
+    --m-grey-bg: #E2E2E2; --m-grey-acc: #BDBDBD; --m-grey-tx: #616161; --m-grey-sub: #8F8F8F;
   }
 
   body {
@@ -39,251 +29,128 @@
     flex-direction: column;
     align-items: center;
     padding: 32px 16px;
-    background-image: 
-      radial-gradient(ellipse at 20% 20%, rgba(174,193,177,0.1) 0%, transparent 60%),
-      radial-gradient(ellipse at 80% 80%, rgba(174,193,177,0.08) 0%, transparent 60%);
   }
 
-  h1 {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 1.6rem;
-    color: #6E6864;
-    margin-bottom: 28px;
-    letter-spacing: 0.05em;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+  h1 { font-family: 'Noto Serif TC', serif; font-size: 1.6rem; color: #6E6864; margin-bottom: 24px; }
 
   .app {
     display: grid;
-    grid-template-columns: 320px 1fr;
+    grid-template-columns: 350px 1fr;
     gap: 28px;
     width: 100%;
-    max-width: 900px;
-    align-items: start;
+    max-width: 1000px;
   }
 
   .input-panel {
     background: #FCFAF9;
     border-radius: 20px;
-    padding: 28px 24px;
+    padding: 24px;
     border: 1.5px solid rgba(139,99,64,0.12);
     box-shadow: 0 4px 24px rgba(80,70,60,0.06);
   }
 
-  .section-label {
-    font-size: 0.78rem;
-    font-weight: 500;
-    color: #8B837E;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-
-  .field-group { margin-bottom: 22px; }
-
-  .field-label {
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: #59524E;
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .field-label .num {
-    width: 20px; height: 20px;
-    background: #AF9D92;
-    color: #fff;
-    border-radius: 50%;
-    font-size: 0.72rem;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 700;
-  }
+  .field-group { margin-bottom: 20px; }
+  .field-label { font-size: 0.85rem; font-weight: 500; color: #59524E; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .field-label .num { width: 20px; height: 20px; background: #AF9D92; color: #fff; border-radius: 50%; font-size: 0.72rem; display: flex; align-items: center; justify-content: center; }
 
   textarea, input[type=text] {
     width: 100%;
     background: #fff;
     border: 1.5px solid rgba(139,99,64,0.18);
     border-radius: 10px;
-    padding: 10px 14px;
-    font-family: 'Noto Sans TC', sans-serif;
+    padding: 10px;
     font-size: 0.9rem;
-    color: #3d2b1f;
     outline: none;
-    resize: none;
-  }
-
-  .char-count {
-    text-align: right;
-    font-size: 0.75rem;
-    color: #A09690;
-    margin-top: 4px;
   }
 
   .themes {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
+    gap: 8px;
   }
 
   .theme-option { cursor: pointer; }
   .theme-option input { display: none; }
-
-  .theme-swatch {
-    border-radius: 10px;
-    overflow: hidden;
-    border: 2.5px solid transparent;
-    transition: all 0.2s;
-    aspect-ratio: 1;
-  }
-
-  .theme-option input:checked + .theme-swatch {
-    border-color: #AF9D92;
-    transform: scale(1.05);
-  }
-
-  .swatch-inner { width: 100%; height: 70%; }
-  .swatch-label { font-size: 0.72rem; text-align: center; padding: 4px 2px; font-weight: 500; }
-
-  .swatch-morandi-mint .swatch-inner { background: #E0E8E1; }
-  .swatch-morandi-mint .swatch-label { background: #ECEFEA; color: #607366; }
-  .swatch-morandi-blue .swatch-inner { background: #E1E8EE; }
-  .swatch-morandi-blue .swatch-label { background: #EBEDEF; color: #607686; }
-  .swatch-morandi-rose .swatch-inner { background: #EBE0E1; }
-  .swatch-morandi-rose .swatch-label { background: #EFEAEC; color: #866063; }
-  .swatch-morandi-taupe .swatch-inner { background: #EAE3DD; }
-  .swatch-morandi-taupe .swatch-label { background: #EEEAE7; color: #867160; }
+  .theme-swatch { border-radius: 8px; overflow: hidden; border: 2px solid transparent; transition: 0.2s; aspect-ratio: 1; }
+  .theme-option input:checked + .theme-swatch { border-color: #AF9D92; transform: scale(1.05); }
+  .swatch-inner { width: 100%; height: 100%; }
 
   .btn-download {
     width: 100%;
     padding: 13px;
-    background: linear-gradient(135deg, #AF9D92, #9E897E);
+    background: #AF9D92;
     color: #fff;
     border: none;
     border-radius: 12px;
-    font-size: 0.95rem;
+    font-weight: 500;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 8px;
+    margin-top: 10px;
   }
 
-  .preview-panel {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-  }
+  .preview-panel { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  #poster-wrap { width: 100%; max-width: 450px; aspect-ratio: 1; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+  #poster { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; position: relative; }
 
-  #poster-wrap {
-    width: 100%;
-    max-width: 480px;
-    aspect-ratio: 1;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 8px 40px rgba(80,70,60,0.12);
-  }
+  .poster-quote { font-family: 'Noto Serif TC', serif; font-size: 2rem; font-weight: 700; line-height: 1.6; text-align: center; z-index: 1; margin-bottom: 24px; white-space: pre-wrap; }
+  .poster-divider { width: 40px; height: 2px; margin-bottom: 16px; z-index: 1; }
+  .poster-author { font-family: 'Noto Serif TC', serif; font-size: 1rem; z-index: 1; }
 
-  #poster {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 48px;
-    position: relative;
-  }
+  .poster-deco { position: absolute; inset: 0; }
+  .deco-c1 { position: absolute; width: 50%; height: 50%; border-radius: 50%; top: -10%; right: -10%; opacity: 0.2; }
+  .deco-c2 { position: absolute; width: 40%; height: 40%; border-radius: 50%; bottom: -10%; left: -10%; opacity: 0.15; }
 
-  .poster-deco { position: absolute; inset: 0; pointer-events: none; }
-  .deco-circle-1 { position: absolute; width: 55%; aspect-ratio: 1; border-radius: 50%; opacity: 0.18; top: -18%; right: -18%; }
-  .deco-circle-2 { position: absolute; width: 40%; aspect-ratio: 1; border-radius: 50%; opacity: 0.14; bottom: -15%; left: -12%; }
-  .deco-line-top, .deco-line-bottom { position: absolute; left: 10%; right: 10%; height: 1.5px; opacity: 0.3; }
-  .deco-line-top { top: 14%; }
-  .deco-line-bottom { bottom: 14%; }
+  /* 色系切換邏輯 */
+  .theme-red { --bg: var(--m-red-bg); --acc: var(--m-red-acc); --tx: var(--m-red-tx); --sub: var(--m-red-sub); }
+  .theme-orange { --bg: var(--m-orange-bg); --acc: var(--m-orange-acc); --tx: var(--m-orange-tx); --sub: var(--m-orange-sub); }
+  .theme-yellow { --bg: var(--m-yellow-bg); --acc: var(--m-yellow-acc); --tx: var(--m-yellow-tx); --sub: var(--m-yellow-sub); }
+  .theme-green { --bg: var(--m-green-bg); --acc: var(--m-green-acc); --tx: var(--m-green-tx); --sub: var(--m-green-sub); }
+  .theme-blue { --bg: var(--m-blue-bg); --acc: var(--m-blue-acc); --tx: var(--m-blue-tx); --sub: var(--m-blue-sub); }
+  .theme-purple { --bg: var(--m-purple-bg); --acc: var(--m-purple-acc); --tx: var(--m-purple-tx); --sub: var(--m-purple-sub); }
+  .theme-pink { --bg: var(--m-pink-bg); --acc: var(--m-pink-acc); --tx: var(--m-pink-tx); --sub: var(--m-pink-sub); }
+  .theme-grey { --bg: var(--m-grey-bg); --acc: var(--m-grey-acc); --tx: var(--m-grey-tx); --sub: var(--m-grey-sub); }
 
-  .poster-quote {
-    font-family: 'Noto Serif TC', serif;
-    font-size: clamp(1.4rem, 4.5vw, 2rem);
-    font-weight: 700;
-    line-height: 1.65;
-    text-align: center;
-    margin-bottom: 28px;
-    z-index: 1;
-    max-width: 85%;
-    white-space: pre-wrap;
-  }
+  #poster { background: var(--bg); }
+  .poster-quote { color: var(--tx); }
+  .poster-author { color: var(--sub); }
+  .poster-divider, .deco-c1, .deco-c2 { background: var(--acc); }
 
-  .poster-divider { width: 48px; height: 2px; margin: 0 auto 16px; z-index: 1; }
-  .poster-author { font-family: 'Noto Serif TC', serif; font-size: 0.9rem; z-index: 1; }
-
-  /* Theme color mapping */
-  .theme-morandi-mint #poster { background: linear-gradient(135deg, #E0E8E1, #D8E0D8); }
-  .theme-morandi-mint .poster-quote { color: var(--morandi-mint-text); }
-  .theme-morandi-mint .poster-author { color: var(--morandi-mint-sub); }
-  .theme-morandi-mint .poster-divider, .theme-morandi-mint .deco-circle-1, .theme-morandi-mint .deco-circle-2, .theme-morandi-mint .deco-line-top, .theme-morandi-mint .deco-line-bottom { background: var(--morandi-mint-accent); }
-
-  .theme-morandi-blue #poster { background: linear-gradient(135deg, #E1E8EE, #D8DFE6); }
-  .theme-morandi-blue .poster-quote { color: var(--morandi-blue-text); }
-  .theme-morandi-blue .poster-author { color: var(--morandi-blue-sub); }
-  .theme-morandi-blue .poster-divider, .theme-morandi-blue .deco-circle-1, .theme-morandi-blue .deco-circle-2, .theme-morandi-blue .deco-line-top, .theme-morandi-blue .deco-line-bottom { background: var(--morandi-blue-accent); }
-
-  .theme-morandi-rose #poster { background: linear-gradient(135deg, #EBE0E1, #E3D8DA); }
-  .theme-morandi-rose .poster-quote { color: var(--morandi-rose-text); }
-  .theme-morandi-rose .poster-author { color: var(--morandi-rose-sub); }
-  .theme-morandi-rose .poster-divider, .theme-morandi-rose .deco-circle-1, .theme-morandi-rose .deco-circle-2, .theme-morandi-rose .deco-line-top, .theme-morandi-rose .deco-line-bottom { background: var(--morandi-rose-accent); }
-
-  .theme-morandi-taupe #poster { background: linear-gradient(135deg, #EAE3DD, #E3DBD4); }
-  .theme-morandi-taupe .poster-quote { color: var(--morandi-taupe-text); }
-  .theme-morandi-taupe .poster-author { color: var(--morandi-taupe-sub); }
-  .theme-morandi-taupe .poster-divider, .theme-morandi-taupe .deco-circle-1, .theme-morandi-taupe .deco-circle-2, .theme-morandi-taupe .deco-line-top, .theme-morandi-taupe .deco-line-bottom { background: var(--morandi-taupe-accent); }
-
-  @media (max-width: 700px) {
-    .app { grid-template-columns: 1fr; }
-    .preview-panel { order: -1; }
-  }
+  @media (max-width: 768px) { .app { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
 
-<h1><span>🎨</span> 莫蘭迪金句海報生成器</h1>
+<h1>🎨 莫蘭迪金句海報</h1>
 
 <div class="app">
   <div class="input-panel">
-    <div class="section-label">✦ 輸入區</div>
     <div class="field-group">
       <div class="field-label"><span class="num">1</span> 金句內容</div>
-      <textarea id="quote-input" rows="4" maxlength="200">想了，就去做</textarea>
-      <div class="char-count"><span id="char-count">6</span> / 200</div>
+      <textarea id="quote-input" rows="3">想了，就去做</textarea>
     </div>
     <div class="field-group">
       <div class="field-label"><span class="num">2</span> 作者</div>
       <input type="text" id="author-input" value="— Cyan Lee">
     </div>
     <div class="field-group">
-      <div class="field-label"><span class="num">3</span> 選擇配色</div>
+      <div class="field-label"><span class="num">3</span> 選擇配色 (紅橙黃綠藍紫粉灰)</div>
       <div class="themes">
-        <label class="theme-option"><input type="radio" name="theme" value="morandi-mint" checked><div class="theme-swatch swatch-morandi-mint"><div class="swatch-inner"></div><div class="swatch-label">薄荷</div></div></label>
-        <label class="theme-option"><input type="radio" name="theme" value="morandi-blue"><div class="theme-swatch swatch-morandi-blue"><div class="swatch-inner"></div><div class="swatch-label">霧藍</div></div></label>
-        <label class="theme-option"><input type="radio" name="theme" value="morandi-rose"><div class="theme-swatch swatch-morandi-rose"><div class="swatch-inner"></div><div class="swatch-label">藕粉</div></div></label>
-        <label class="theme-option"><input type="radio" name="theme" value="morandi-taupe"><div class="theme-swatch swatch-morandi-taupe"><div class="swatch-inner"></div><div class="swatch-label">灰褐</div></div></label>
+        <label class="theme-option"><input type="radio" name="theme" value="red" checked><div class="theme-swatch"><div class="swatch-inner" style="background:#E8D7D7" title="紅"></div></div></label>
+        <label class="theme-option"><input type="radio" name="theme" value="orange"><div class="theme-swatch"><div class="swatch-inner" style="background:#E8DED7" title="橙"></div></div></label>
+        <label class="theme-option"><input type="radio" name="theme" value="yellow"><div class="theme-swatch"><div class="swatch-inner" style="background:#E8E5D7" title="黃"></div></div></label>
+        <label class="theme-option"><input type="radio" name="theme" value="green"><div class="theme-swatch"><div class="swatch-inner" style="background:#DDE8D7" title="綠"></div></div></label>
+        <label class="theme-option"><input type="radio" name="theme" value="blue"><div class="theme-swatch"><div class="swatch-inner" style="background:#D7E1E8" title="藍"></div></div></label>
+        <label class="theme-option"><input type="radio" name="theme" value="purple"><div class="theme-swatch"><div class="swatch-inner" style="background:#DFD7E8" title="紫"></div></div></label>
+        <label class="theme-option"><input type="radio" name="theme" value="pink"><div class="theme-swatch"><div class="swatch-inner" style="background:#E8D7E2" title="粉"></div></div></label>
+        <label class="theme-option"><input type="radio" name="theme" value="grey"><div class="theme-swatch"><div class="swatch-inner" style="background:#E2E2E2" title="灰"></div></div></label>
       </div>
     </div>
-    <button class="btn-download" onclick="downloadPoster()">下載 PNG</button>
+    <button class="btn-download" onclick="downloadPoster()">下載海報 (PNG)</button>
   </div>
 
   <div class="preview-panel">
-    <div class="preview-label">✦ 即時預覽</div>
-    <div id="poster-wrap" class="theme-morandi-mint">
+    <div id="poster-wrap" class="theme-red">
       <div id="poster">
-        <div class="poster-deco">
-          <div class="deco-circle-1"></div><div class="deco-circle-2"></div><div class="deco-line-top"></div><div class="deco-line-bottom"></div>
-        </div>
+        <div class="poster-deco"><div class="deco-c1"></div><div class="deco-c2"></div></div>
         <div class="poster-quote" id="poster-quote">想了，就去做</div>
         <div class="poster-divider"></div>
         <div class="poster-author" id="poster-author">— Cyan Lee</div>
@@ -297,32 +164,20 @@
   const authorInput = document.getElementById('author-input');
   const posterQuote = document.getElementById('poster-quote');
   const posterAuthor = document.getElementById('poster-author');
-  const charCount = document.getElementById('char-count');
   const posterWrap = document.getElementById('poster-wrap');
 
-  quoteInput.addEventListener('input', () => {
-    posterQuote.textContent = quoteInput.value || '輸入內容…';
-    charCount.textContent = quoteInput.value.length;
-  });
-
-  authorInput.addEventListener('input', () => {
-    posterAuthor.textContent = authorInput.value;
-    posterAuthor.style.display = authorInput.value ? '' : 'none';
-  });
-
+  quoteInput.addEventListener('input', () => posterQuote.textContent = quoteInput.value || '輸入內容…');
+  authorInput.addEventListener('input', () => posterAuthor.textContent = authorInput.value);
   document.querySelectorAll('input[name=theme]').forEach(radio => {
-    radio.addEventListener('change', () => { posterWrap.className = `theme-${radio.value}`; });
+    radio.addEventListener('change', () => posterWrap.className = `theme-${radio.value}`);
   });
 
   async function downloadPoster() {
-    const poster = document.getElementById('poster');
-    try {
-      const canvas = await html2canvas(poster, { scale: 2, useCORS: true });
-      const link = document.createElement('a');
-      link.download = 'CyanLee_金句海報.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    } catch (e) { alert('下載失敗'); }
+    const canvas = await html2canvas(document.getElementById('poster'), { scale: 2 });
+    const link = document.createElement('a');
+    link.download = 'CyanLee_Poster.png';
+    link.href = canvas.toDataURL();
+    link.click();
   }
 </script>
 </body>
